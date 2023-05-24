@@ -89,6 +89,7 @@ def timetableClean(filename, output):
     dict = {k: v for k, v in horario_dict(c_list).items() if v}
     horario = timetable(dict, size(dict))
 
-    with open(path+output+'.txt', 'w') as convert_file:
+    with open(path+'/'+output+'.txt', 'w') as convert_file:
         convert_file.write(json.dumps(horario))
+        print(f'filse created sucessfuly at {path}/{output}.txt')
 

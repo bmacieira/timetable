@@ -1,5 +1,5 @@
 from timetable import *
 
-timetableClean("ao.csv", 'output')
+timetableClean("C:/Users/Bruno/Coding/JupyterNotebooks/Outros/enf.csv", "clean_timetable")
 
 
