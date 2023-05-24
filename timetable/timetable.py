@@ -1,7 +1,5 @@
-import csv
+import csv, os
 import re, json
-
-list = []
 
 def join_strings(list):
     str = ""
@@ -80,15 +78,17 @@ def size(dict):
 
 
 def timetableClean(filename, output):
+    list = []
+    path = os.path.dirname(filename)
     with open(filename) as csvfile:
         readCSV = csv.reader(csvfile, delimiter=',')
         for row in readCSV:
             list.append(join_strings(row))
 
-    lista = clean_list(list)
-    dict = {k: v for k, v in horario_dict(lista).items() if v}
+    c_list = clean_list(list)
+    dict = {k: v for k, v in horario_dict(c_list).items() if v}
     horario = timetable(dict, size(dict))
 
-    with open(output+'.txt', 'w') as convert_file:
+    with open(path+output+'.txt', 'w') as convert_file:
         convert_file.write(json.dumps(horario))
 
