@@ -1,16 +1,19 @@
 ### Timetable - csv to dictionary
 <hr>
 
-    Transforms a csv file in an dictionary.
-    key = shift
-    value = worker list of numbers
+<b>Transforms a csv file in an dictionary.</b>
 
-    Using the function:
+key: shift <br>
+value: workers (employee identification number) scheduled for the shift
 
-        timetableClean(filename, output)
+<b>Using the function:</b>
+
+    timetableClean(filename, output)
 
     Args:
-        filename: input path and csv file
+        filename: input path + csv filename
         output: name wanted for the txt output file
+        (this file will be stored in the same folder 
+        of the original file)
 
 

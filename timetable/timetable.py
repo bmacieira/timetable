@@ -10,8 +10,9 @@ def join_strings(list):
 
 def clean_list(list):
     new_list = []
+    pattern = re.compile("^[; ]*$")
     for item in list:
-        if not re.search("^[; ]*$", item) and re.search("([A-Z0-1]{1}[0-9]{2})+", item[:3]):
+        if not pattern.search(item) and re.search("([A-Z0-1]{1}[0-9]{2})+", item[:3]):
             new_list.append(item.split(";"))
     return new_list
 
