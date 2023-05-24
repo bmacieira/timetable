@@ -1,5 +1,5 @@
 import csv, os
-import re, json
+import re
 
 def join_strings(list):
     str = ""
@@ -17,8 +17,8 @@ def clean_list(list):
 
 
 def horario_dict(list):
-    turnos = ['DC', 'DS', 'CH', 'Fer', 'TA', 'MA', 'NA', 'Fr', 'Fe', 'TE', 'MC', 'MR', 'MS', 'ME', 'NB', 'NBc', 'TB',
-              'CGS', 'Do', 'MPp', 'FIn', 'FEx', 'AS', 'X']
+    turnos = ['DC', 'DS', 'CH', 'Fer', 'TA', 'MA', 'MB', 'NA', 'Fr', 'Fe', 'TE', 'MC', 'MR', 'MS', 'ME', 'NB', 'NBc', 'TB',
+              'CGS', 'Do', 'MPp', 'FIn', 'FEx', 'AS', 'FAS', 'X']
     dict = {}
     mec = ''
     for item in list:
@@ -38,11 +38,14 @@ def timetable(dict, size):
     noite = ['NA', 'NBc']
     manha = ['MA', 'MC', 'MR']
     tarde = ['TA']
+    reab = ['TB']
     timetable = {}
+    enf_reab = {}
     for i in range(size):
         timetable['N' + str(i + 1)] = []
         timetable['M' + str(i + 1)] = []
         timetable['T' + str(i + 1)] = []
+        enf_reab['T' + str(i + 1)] = []
 
     for el in timetable.keys():
         for mec in dict.keys():
@@ -60,7 +63,11 @@ def timetable(dict, size):
                 for item in tarde:
                     if item in turnos[n]:
                         timetable[el].append(mec)
-    return timetable
+                for item in reab:
+                    if item in turnos[n]:
+                        enf_reab[el].append(mec)
+
+    return timetable, enf_reab
 
 
 def size(dict):
@@ -75,7 +82,7 @@ def size(dict):
                 print("Error - Size don't match in all workers")
         return length
 
-
+horario = {}
 
 def timetableClean(filename, output):
     list = []
@@ -87,9 +94,14 @@ def timetableClean(filename, output):
 
     c_list = clean_list(list)
     dict = {k: v for k, v in horario_dict(c_list).items() if v}
-    horario = timetable(dict, size(dict))
+    horario, horario_reab = timetable(dict, size(dict))
 
     with open(path+'/'+output+'.txt', 'w') as convert_file:
-        convert_file.write(json.dumps(horario))
-        print(f'filse created sucessfuly at {path}/{output}.txt')
+        for key in horario.keys():
+            convert_file.write("'{}':'{}'\n".format(key, horario[key]))
+        convert_file.write("\n")
+        for key in horario_reab.keys():
+            convert_file.write("'{}':'{}'\n".format(key, horario_reab[key]))
+        print(f'file created sucessfuly at {path}/{output}.txt')
 
+        return horario, horario_reab
